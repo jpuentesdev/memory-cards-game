@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Cards Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Memory Game</h2>
+        <div class="game"></div>
+        <div class="functionalities">
+            <p id="puntuacion">Puntuación: 0</p>
+            <p id="intentos">Nº de Intentos: 0</p>
+        </div>
+        
+        <button class="reset" onclick="reiniciarJuego()">Reiniciar el juego</button>
+    </div>
+
+    <script>
+        const emojisAnimales = ["🐶", "🐶", "🐱", "🐱", "🐭", "🐭", "🐹", "🐹", "🐰", "🐰", "🦊", "🦊", "🐻", "🐻", "🐼", "🐼"];
+        const emojisFrutas = ["🍏", "🍏", "🍎", "🍎", "🍐", "🍐", "🍊", "🍊", "🍋", "🍋", "🍌", "🍌", "🍉", "🍉", "🍇", "🍇"];
+        const emojisDeportes = ["⚽", "⚽", "🏀", "🏀", "🏈", "🏈", "⚾", "⚾", "🎾", "🎾", "🏐", "🏐", "🏉", "🏉", "🎱", "🎱"];
+        const emojisBanderas = ["🇦🇷", "🇦🇷", "🇧🇷", "🇧🇷", "🇨🇦", "🇨🇦", "🇩🇪", "🇩🇪", "🇪🇸", "🇪🇸", "🇫🇷", "🇫🇷", "🇬🇧", "🇬🇧", "🇺🇸", "🇺🇸"];
+        let emojis = [];
+        let intentos = 0;
+        let puntuacion = 0; 
+
+        function seleccionarEmojis() {
+            const temas = [emojisAnimales, emojisFrutas, emojisDeportes, emojisBanderas];
+            emojis = temas[Math.floor(Math.random() * temas.length)];
+        }
+
+        function iniciarJuego() {
+            seleccionarEmojis();
+            var shuf_emojis = emojis.sort(() => (Math.random() > .5) ? 2 : -1);
+            for (var i = 0; i < emojis.length; i++) {
+                let box = document.createElement("div");
+                box.className = "item";
+                box.innerHTML = shuf_emojis[i];
+
+                let bloqueo = false;
+
+                box.onclick = function() {
+                    this.classList.add("boxOpen");
+                    setTimeout(function() {
+                        if (document.querySelectorAll(".boxOpen").length > 1) {
+                            intentos++; // Incrementa el número de intentos aquí
+                            document.getElementById('intentos').textContent = 'Nº de Intentos: ' + intentos;
+                            if (document.querySelectorAll(".boxOpen")[0].innerHTML == document.querySelectorAll(".boxOpen")[1].innerHTML) {
+                                document.querySelectorAll(".boxOpen")[0].classList.add("boxMatch");
+                                document.querySelectorAll(".boxOpen")[1].classList.add("boxMatch");
+                                
+                                document.querySelectorAll(".boxOpen")[1].classList.remove("boxOpen");
+                                document.querySelectorAll(".boxOpen")[0].classList.remove("boxOpen");
+
+                                puntuacion++;
+                                document.getElementById('puntuacion').textContent = 'Puntuación: ' + puntuacion;
+
+                                if (document.querySelectorAll(".boxMatch").length == emojis.length) {
+                                    alert("¡Felicidades! Has ganado el juego");
+                                }
+                                
+                            } else {
+                                bloqueo = true;
+                                document.querySelectorAll(".boxOpen")[1].classList.remove("boxOpen");
+                                document.querySelectorAll(".boxOpen")[0].classList.remove("boxOpen");
+                                bloqueo = false;
+                            }
+                        }
+                    }, 500);
+                } 
+
+                document.querySelector(".game").appendChild(box);
+            }
+        }
+
+        function reiniciarJuego() {
+            document.querySelector(".game").innerHTML = '';
+            iniciarJuego();
+            puntuacion = 0; 
+            intentos = 0; // Reinicia el número de intentos aquí
+            document.getElementById('intentos').textContent = 'Nº de Intentos: ' + intentos;
+            document.getElementById('puntuacion').textContent = 'Puntuación: ' + puntuacion; 
+        }
+
+        iniciarJuego();
+    </script>
+</body>
+</html>
