@@ -10,8 +10,3 @@ Los emoticonos de las cartas están guardados en arrays por temáticas que se ca
 
 ![App Screenshot](https://github.com/jpuentesdev/memory-cards-game/blob/main/preview.png?raw=true)
 
-
-## Autor
-
-- [@jpuentesdev](https://www.github.com/jpuentesdev)
-
